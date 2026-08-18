@@ -1,0 +1,7 @@
+/**
+ * MoneyManagementApplicationTest
+ */
+public class MoneyManagementApplicationTest {
+
+    
+}
