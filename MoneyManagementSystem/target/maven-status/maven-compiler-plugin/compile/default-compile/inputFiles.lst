@@ -1,1 +1,6 @@
 /workspaces/MoneyManagementSystem/MoneyManagementSystem/src/main/java/com/yashwardhan/moneymanagementsyatem/MoneyManagementApplication.java
+/workspaces/MoneyManagementSystem/MoneyManagementSystem/src/main/java/com/yashwardhan/moneymanagementsyatem/entity/AppUser.java
+/workspaces/MoneyManagementSystem/MoneyManagementSystem/src/main/java/com/yashwardhan/moneymanagementsyatem/entity/Borrower.java
+/workspaces/MoneyManagementSystem/MoneyManagementSystem/src/main/java/com/yashwardhan/moneymanagementsyatem/entity/Expense.java
+/workspaces/MoneyManagementSystem/MoneyManagementSystem/src/main/java/com/yashwardhan/moneymanagementsyatem/entity/Loan.java
+/workspaces/MoneyManagementSystem/MoneyManagementSystem/src/main/java/com/yashwardhan/moneymanagementsyatem/entity/Repayment.java
