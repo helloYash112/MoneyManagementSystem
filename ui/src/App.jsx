@@ -1,7 +1,7 @@
 
 import './App.css'
 import {RouterProvider} from 'react-router-dom'
-import {routers} from './router.js'
+import {routers} from '../routes/router'
 
 
 
