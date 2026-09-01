@@ -1,50 +1,36 @@
-import { Github, Wallet } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 
 export default function Login() {
-  const handleGoogleLogin = () => {
-    window.location.href =
-      "http://localhost:8080/oauth2/authorization/google";
+  const loginWithGithub = () => {
+    window.location.href = "http://localhost:8080/oauth2/authorization/github";
   };
 
-  const handleGithubLogin = () => {
-    window.location.href =
-      "http://localhost:8080/oauth2/authorization/github";
+  const loginWithGoogle = () => {
+    window.location.href = "http://localhost:8080/oauth2/authorization/google";
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100">
-      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
-        <div className="flex flex-col items-center">
-          <div className="bg-emerald-500 p-4 rounded-xl text-white">
-            <Wallet size={36} />
-          </div>
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-900 text-white gap-4">
+      <h1 className="text-2xl font-bold mb-6">Login</h1>
 
-          <h1 className="mt-4 text-2xl font-bold">
-            Money Management System
-          </h1>
+      {/* GitHub Login */}
+      <button
+        onClick={loginWithGithub}
+        className="flex items-center gap-2 px-6 py-3 bg-gray-800 rounded-lg shadow hover:bg-gray-700 transition"
+      >
+        <FaGithub size={24} />
+        Login with GitHub
+      </button>
 
-          <p className="mt-2 text-gray-500 text-center">
-            Login using your OAuth provider
-          </p>
-        </div>
-
-        <div className="mt-8 space-y-3">
-          <button
-            onClick={handleGoogleLogin}
-            className="w-full rounded-lg border border-gray-300 px-4 py-3 font-medium hover:bg-gray-50"
-          >
-            Continue with Google
-          </button>
-
-          <button
-            onClick={handleGithubLogin}
-            className="w-full rounded-lg bg-black text-white px-4 py-3 font-medium hover:bg-gray-900 flex items-center justify-center gap-2"
-          >
-            <Github size={18} />
-            Continue with GitHub
-          </button>
-        </div>
-      </div>
+      {/* Google Login */}
+      <button
+        onClick={loginWithGoogle}
+        className="flex items-center gap-2 px-6 py-3 bg-white text-black rounded-lg shadow hover:bg-gray-100 transition"
+      >
+        <FcGoogle size={24} />
+        Login with Google
+      </button>
     </div>
   );
 }
