@@ -1,0 +1,134 @@
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+
+import java.util.Collection;
+import java.util.Map;
+
+public class CustomOAuth2User implements OAuth2User {
+
+    private final OAuth2User oAuth2User;
+
+    public CustomOAuth2User(OAuth2User oAuth2User) {
+        this.oAuth2User = oAuth2User;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return oAuth2User.getAttributes();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return oAuth2User.getAuthorities();
+    }
+
+    @Override
+    public String getName() {
+        return oAuth2User.getAttribute("name") != null
+                ? oAuth2User.getAttribute("name")
+                : oAuth2User.getAttribute("login"); // GitHub fallback
+    }
+
+    public String getEmail() {
+        return oAuth2User.getAttribute("email");
+    }
+
+    public String getImageUrl() {
+        return oAuth2User.getAttribute("avatar_url") != null
+                ? oAuth2User.getAttribute("avatar_url")
+                : oAuth2User.getAttribute("picture");
+    }
+}
+
+
+
+
+
+-------------------------------
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CustomOAuth2UserService extends DefaultOAuth2UserService {
+
+    private final AppUserRepo appUserRepository;
+
+    public CustomOAuth2UserService(AppUserRepo appUserRepository) {
+        this.appUserRepository = appUserRepository;
+    }
+
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        OAuth2User oAuth2User = super.loadUser(userRequest);
+
+        String provider = userRequest.getClientRegistration().getRegistrationId().toUpperCase();
+
+        Object providerIdObj = oAuth2User.getAttribute("id"); // GitHub
+        if (providerIdObj == null) {
+            providerIdObj = oAuth2User.getAttribute("sub"); // Google
+        }
+        String providerId = String.valueOf(providerIdObj);
+
+        String email = oAuth2User.getAttribute("email");
+        String name = oAuth2User.getAttribute("name");
+        String imageUrl = oAuth2User.getAttribute("avatar_url");
+        if (imageUrl == null) {
+            imageUrl = oAuth2User.getAttribute("picture");
+        }
+
+        AppUser user = appUserRepository.findByProviderAndProviderId(provider, providerId)
+                .orElseGet(AppUser::new);
+
+        user.setProvider(provider);
+        user.setProviderId(providerId);
+        user.setEmail(email != null ? email : "not-provided");
+        user.setName(name != null ? name : oAuth2User.getAttribute("login"));
+        user.setImageUrl(imageUrl);
+
+        appUserRepository.save(user);
+
+        return new CustomOAuth2User(oAuth2User); // 👈 wrapped principal
+    }
+}
+--------------------------------
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           CustomOAuth2UserService customOAuth2UserService) throws Exception {
+        http
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/", "/public/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .oauth2Login(oauth -> oauth
+                .userInfoEndpoint(userInfo -> userInfo
+                    .userService(customOAuth2UserService)
+                )
+                // 👇 Redirect to frontend after login
+                .successHandler((request, response, authentication) -> {
+                    response.sendRedirect("http://localhost:5173");
+                })
+            )
+            .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("http://localhost:5173")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+            );
+
+        return http.build();
+    }
+}
+------------------------------
+
+-----------------------------------------------
