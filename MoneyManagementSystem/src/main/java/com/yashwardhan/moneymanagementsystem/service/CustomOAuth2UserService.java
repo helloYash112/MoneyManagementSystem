@@ -1,4 +1,4 @@
-package com.yashwardhan.moneymanagementsystem.service;
+/*package com.yashwardhan.moneymanagementsystem.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -51,3 +51,4 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         return oAuth2User; // still return OAuth2User for Spring Security context
     }
 }
+*/

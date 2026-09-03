@@ -1,4 +1,4 @@
-package com.yashwardhan.moneymanagementsystem.config;
+/*package com.yashwardhan.moneymanagementsystem.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,6 +9,7 @@ import com.yashwardhan.moneymanagementsystem.service.CustomOAuth2UserService;
 
 @EnableWebSecurity
 public class SecurityConfig {
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
@@ -27,3 +28,5 @@ public class SecurityConfig {
         return http.build();
     }
 }
+
+*/
