@@ -1,7 +1,19 @@
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 
 export default function Login() {
+  const { isAuthenticated, loading } = useSelector((state) => state.user);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
   const loginWithGithub = () => {
     window.location.href = "http://localhost:8080/oauth2/authorization/github";
   };
@@ -13,9 +25,8 @@ export default function Login() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
       <div className="w-full max-w-md p-8 border border-gray-700 rounded-2xl bg-gray-800 shadow-xl">
-        <h1 className="text-2xl font-bold text-center mb-2">
-          Login
-        </h1>
+       
+        <h1 className="text-2xl font-bold text-center mb-2">Login</h1>
 
         <h3 className="text-center text-gray-300 mb-8">
           Welcome to MoneyManagementSystem

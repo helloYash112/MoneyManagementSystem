@@ -6,28 +6,29 @@ import Sidebar from "../components/ui/Sidebar"
 import Navbar from "../components/ui/Navbar"
 import MainLayout from "../layouts/MainLayout"
 import Dashboard from "../pages/Dashboard";
+import ProtectedRoute from "../components/ProtectedRoute";
+import Profile from "../pages/Profile";
+
 
 
 
 export const routers = createBrowserRouter([
   {
     path: "/",
-    Component: MainLayout,
+    element: <ProtectedRoute children={<MainLayout></MainLayout>}></ProtectedRoute>,
     children: [
-
       {
-
-        index: true,
-
-        Component: Dashboard,
-
-      },
-
+        index: true, 
+        element:<ProtectedRoute children={<Dashboard></Dashboard>}></ProtectedRoute> ,
+        
+      },{
+        path:"profile",
+        element:<Profile></Profile>
+      }
     ],
   },
   {
     path: "/auth",
-    Component: Login,
-  },
-
+    element: <Login />,
+  }
 ]);

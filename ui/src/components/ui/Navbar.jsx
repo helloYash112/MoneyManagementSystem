@@ -1,6 +1,8 @@
-import { Bell, Search } from "lucide-react";
+import { Bell, Search } from "lucide-react"
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+    const user =useSelector(state => state.user);
     return (
         <header className="bg-white shadow px-6 py-4 flex justify-between items-center">
             <h2 className="text-2xl font-semibold">
@@ -18,7 +20,7 @@ const Navbar = () => {
                 </div>
 
                 <Bell size={22} />
-                <img src="https://i.pravatar.cc/40" alt="profile"
+                <img src={user.profileImg} alt={user.userName}
                 className="w-10 h-10 rounded-full" />
 
              

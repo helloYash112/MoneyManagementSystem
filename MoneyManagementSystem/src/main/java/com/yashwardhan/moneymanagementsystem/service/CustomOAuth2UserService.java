@@ -1,4 +1,4 @@
-/*package com.yashwardhan.moneymanagementsystem.service;
+package com.yashwardhan.moneymanagementsystem.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.yashwardhan.moneymanagementsystem.entity.AppUser;
+import com.yashwardhan.moneymanagementsystem.entity.CustomOAuth2User;
 import com.yashwardhan.moneymanagementsystem.repository.AppUserRepo;
 
 @Service
@@ -20,35 +21,33 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        String provider = userRequest.getClientRegistration().getRegistrationId().toUpperCase(); // "GITHUB" or "GOOGLE"
-
-        // Safely handle providerId
-        Object providerIdObj = oAuth2User.getAttribute("id"); // GitHub
+        String provider = userRequest.getClientRegistration().getRegistrationId().toUpperCase();
+        Object providerIdObj = oAuth2User.getAttribute("id");
         if (providerIdObj == null) {
-            providerIdObj = oAuth2User.getAttribute("sub"); // Google
+            providerIdObj = oAuth2User.getAttribute("sub");
         }
-        String providerId = String.valueOf(providerIdObj); // works for Integer or String
+        String providerId = String.valueOf(providerIdObj);
 
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
-        String imageUrl = oAuth2User.getAttribute("avatar_url"); // GitHub
+        String imageUrl = oAuth2User.getAttribute("avatar_url");
         if (imageUrl == null) {
-            imageUrl = oAuth2User.getAttribute("picture"); // Google
+            imageUrl = oAuth2User.getAttribute("picture");
         }
 
-        // Find existing user or create new
         AppUser user = appUserRepository.findByProviderAndProviderId(provider, providerId)
                 .orElseGet(AppUser::new);
 
         user.setProvider(provider);
         user.setProviderId(providerId);
         user.setEmail(email != null ? email : "not-provided");
-        user.setName(name != null ? name : oAuth2User.getAttribute("login")); // fallback for GitHub
+        user.setName(name != null ? name : oAuth2User.getAttribute("login"));
         user.setImageUrl(imageUrl);
 
         appUserRepository.save(user);
 
-        return oAuth2User; // still return OAuth2User for Spring Security context
+        // 👇 return wrapped user instead of raw OAuth2User
+        return new CustomOAuth2User(oAuth2User, user);
     }
+
 }
-*/

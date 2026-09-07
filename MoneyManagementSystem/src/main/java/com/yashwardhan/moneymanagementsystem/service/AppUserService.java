@@ -1,5 +1,7 @@
 package com.yashwardhan.moneymanagementsystem.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.yashwardhan.moneymanagementsystem.DTO.request.AppUserRequestDto;
@@ -84,5 +86,21 @@ public class AppUserService {
             throw new IllegalArgumentException("User not found");
         }
         appUserRepository.deleteById(id);
+    }
+    
+    public AppUserResponseDto findByProviderAndProviderId(String provider, String providerId) {
+    	Optional<AppUser> user =appUserRepository.findByProviderAndProviderId(provider, providerId);
+    	AppUser u=user.get();
+    	 AppUserResponseDto resDto = new AppUserResponseDto();
+         resDto.setId(u.getId());
+         resDto.setProviderId(u.getProviderId());
+         resDto.setProvider(u.getProvider());
+         resDto.setEmail(u.getEmail());
+         resDto.setName(u.getName());
+         resDto.setImageUrl(u.getImageUrl());
+         resDto.setCreatedAt(u.getCreatedAt());
+    	
+		return resDto;
+    	
     }
 }

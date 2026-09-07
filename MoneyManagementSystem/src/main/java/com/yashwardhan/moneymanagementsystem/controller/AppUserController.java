@@ -2,7 +2,10 @@ package com.yashwardhan.moneymanagementsystem.controller;
 
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yashwardhan.moneymanagementsystem.DTO.request.AppUserRequestDto;
 import com.yashwardhan.moneymanagementsystem.DTO.response.AppUserResponseDto;
+import com.yashwardhan.moneymanagementsystem.entity.AppUser;
 import com.yashwardhan.moneymanagementsystem.service.AppUserService;
 
 import jakarta.validation.Valid;
@@ -56,5 +60,22 @@ public class AppUserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         appUserService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/me")
+    public ResponseEntity<AppUserResponseDto> getCurrentUser(@AuthenticationPrincipal OAuth2User principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        // Extract provider + providerId
+        String provider = principal.getAttribute("iss") != null ? "GOOGLE" : "GITHUB";
+        Object providerIdObj = principal.getAttribute("id"); // GitHub
+        if (providerIdObj == null) {
+            providerIdObj = principal.getAttribute("sub"); // Google
+        }
+        String providerId = String.valueOf(providerIdObj);
+
+       
+        return ResponseEntity.ok(appUserService.findByProviderAndProviderId(provider, providerId));
     }
 }
