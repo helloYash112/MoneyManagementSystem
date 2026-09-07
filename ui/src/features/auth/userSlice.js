@@ -13,18 +13,6 @@ export const fetchUserById = createAsyncThunk(
   },
 );
 
-// Async thunk to create a new user
-export const createUser = createAsyncThunk(
-  "user/createUser",
-  async (userData, { rejectWithValue }) => {
-    try {
-      const response = await api.post("/users", userData);
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response?.data || "Failed to create user");
-    }
-  },
-);
 
 // Async thunk to fetch currently authenticated OAuth user
 export const fetchCurrentUser = createAsyncThunk(
@@ -115,25 +103,7 @@ export const userSlice = createSlice({
         state.error = action.payload;
         state.isAuthenticated = false;
       })
-      // createUser
-      .addCase(createUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(createUser.fulfilled, (state, action) => {
-        state.loading = false;
-        const { userId, userName, email, profileImg } = action.payload;
-        state.userId = userId;
-        state.userName = userName;
-        state.email = email;
-        state.profileImg = profileImg;
-        state.isAuthenticated = true;
-      })
-      .addCase(createUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-        state.isAuthenticated = false;
-      })
+     
       // fetchCurrentUser
       .addCase(fetchCurrentUser.pending, (state) => {
         state.loading = true;

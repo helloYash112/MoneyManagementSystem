@@ -5,6 +5,8 @@ import {
   User,
   LogOut,
 } from "lucide-react";
+import { logout } from "../../features/auth/userSlice"
+import { useDispatch } from 'react-redux';
 
 import { NavLink } from "react-router-dom";
 
@@ -31,6 +33,16 @@ const Sidebar = () => {
       path: "/profile",
     },
   ];
+  const dispatch= useDispatch();
+  const handleLogout = () => {
+    
+    if (window.confirm("Are you sure you want to logout?")) {
+      
+      dispatch(logout());
+      
+    }
+    11
+  };
 
   return (
     <aside className="w-64 bg-slate-900 text-white h-screen fixed">
@@ -46,8 +58,7 @@ const Sidebar = () => {
             key={menu.path}
             to={menu.path}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-5 py-3 hover:bg-slate-800 ${
-                isActive ? "bg-slate-800" : ""
+              `flex items-center gap-3 px-5 py-3 hover:bg-slate-800 ${isActive ? "bg-slate-800" : ""
               }`
             }
           >
@@ -58,7 +69,7 @@ const Sidebar = () => {
       </nav>
 
       <div className="absolute bottom-5 w-full px-5">
-        <button className="flex items-center gap-2 text-red-400">
+        <button className="flex items-center gap-2 text-red-400" onClick={handleLogout}>
           <LogOut size={20} />
           Logout
         </button>
