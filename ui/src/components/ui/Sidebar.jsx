@@ -32,6 +32,11 @@ const Sidebar = () => {
       icon: <User size={20} />,
       path: "/profile",
     },
+    {
+      name:"Borrowers",
+      icon:<User size={20}></User>,
+      path:"/borrowers"
+    }
   ];
   const dispatch= useDispatch();
   const handleLogout = () => {

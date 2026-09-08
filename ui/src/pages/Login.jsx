@@ -15,7 +15,7 @@ export default function Login() {
     return <Navigate to="/" replace />;
   }
   const loginWithGithub = () => {
-    window.location.href = "https://cautious-giggle-5gvq9v4xxq4jf4xjr-8080.app.github.dev/oauth2/authorization/github";
+    window.location.href = "http://localhost:8080/oauth2/authorization/github";
   };
 
   const loginWithGoogle = () => {

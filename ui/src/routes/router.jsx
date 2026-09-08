@@ -37,7 +37,7 @@ export const routers = createBrowserRouter([
       },
       {
         path: "/borrowers",
-        element: <Borrowers></Borrowers>,
+        element: <Borrower></Borrower>,
       },
       {
         path: "/loans/:borrowerId",
