@@ -50,14 +50,14 @@ export default function BorrowerTable({
               <td className="p-4">
                 <div className="flex justify-center gap-2">
                   <button
-                    onClick={() =>
-                      onViewLoans(borrower.id)
-                    }
+                    onClick={() => {
+                     
+                      onViewLoans(borrower.id);
+                    }}
                     className="text-blue-600"
                   >
                     <HandCoins size={18} />
                   </button>
-
                   <button
                     onClick={() =>
                       onDelete(borrower)
@@ -72,6 +72,6 @@ export default function BorrowerTable({
           ))}
         </tbody>
       </table>
-    </div>
+    </div >
   );
 }

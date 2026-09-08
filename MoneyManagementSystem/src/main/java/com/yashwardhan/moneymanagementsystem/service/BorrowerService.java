@@ -64,6 +64,9 @@ public class BorrowerService {
                     dto.setPhoneNumber(borrower.getPhoneNumber());
                     dto.setAddress(borrower.getAddress());
                     dto.setNotes(borrower.getNotes());
+                    dto.setId(borrower.getId());
+                    dto.setCreatedAt(borrower.getCreatedAt());
+                   
                     return dto;
                 })
                 .toList();

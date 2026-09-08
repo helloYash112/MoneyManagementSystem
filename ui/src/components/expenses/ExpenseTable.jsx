@@ -10,7 +10,7 @@ export default function ExpenseTable({
       <table className="w-full">
         <thead className="bg-gray-100">
           <tr>
-            <th className="p-4 text-left">Title</th>
+            <th className="p-4 text-left">Description</th>
             <th className="p-4 text-left">Category</th>
             <th className="p-4 text-left">Date</th>
             <th className="p-4 text-right">Amount</th>
@@ -21,7 +21,9 @@ export default function ExpenseTable({
         <tbody>
           {expenses.map((expense) => (
             <tr key={expense.id} className="border-t">
-              <td className="p-4">{expense.title}</td>
+              <td className="p-4">
+                {expense.description || <span className="text-gray-400 italic">No description</span>}
+              </td>
 
               <td className="p-4">
                 <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-600">
@@ -29,7 +31,7 @@ export default function ExpenseTable({
                 </span>
               </td>
 
-              <td className="p-4">{expense.date}</td>
+              <td className="p-4">{expense.expenseDate}</td>
 
               <td className="p-4 text-right font-semibold text-red-500">
                 ₹{expense.amount}
