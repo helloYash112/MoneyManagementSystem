@@ -28,6 +28,7 @@ export default function Expenses() {
       dispatch(fetchExpensesByUser(userId));
     }
   }, [dispatch, userId]);
+  //alert(JSON.stringify(expenses))
 
   // Fixed: Incorporated both search text and category selection into the filtering logic
   const filteredExpenses = useMemo(() => {
@@ -45,16 +46,52 @@ export default function Expenses() {
     });
   }, [expenses, search, category]);
 
+   // Open Add Category form
+  const handleAddExpenses = () => {
+    
+    setEditExpense(null);
+    setShowForm(true);
+  };
+  
+
+  // Open Edit Category form
+  const handleEditExpenses= (expenses) => {
+    setEditExpense(expenses);
+    setShowForm(true);
+  };
+
+  const handleDeleteExpenses=(expenses) => {
+    setEditExpense(expenses);
+    setShowDelete(true);
+  }
+
+
+  const handleExpenseSubmitForm = (data)=>{
+    alert("calling a handleExpenseSubmitForm method")
+    if (editExpense) {
+              
+              dispatch(updateExpense({ id: editExpense.id || editExpense._id, expenseData:data }));
+            } else {
+              // Fixed: Dispatch create action with payload and userId if needed
+              dispatch(createExpense({ ...data, userId }));
+            }
+            setShowForm(false);
+            setEditExpense(null);
+          
+  }
+  const handleCloseForm=()=>{
+    setShowDelete(false);
+            setSelectedExpense(null);
+  }
+
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Expenses</h1>
 
         <button
-          onClick={() => {
-            setEditExpense(null);
-            setShowForm(true);
-          }}
+          onClick={()=>handleAddExpenses()}
           className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white"
         >
           <Plus size={18} />
@@ -72,12 +109,10 @@ export default function Expenses() {
       <ExpenseTable
         expenses={filteredExpenses}
         onEdit={(expense) => {
-          setEditExpense(expense);
-          setShowForm(true);
+          handleEditExpenses(expense)
         }}
         onDelete={(expense) => {
-          setSelectedExpense(expense);
-          setShowDelete(true);
+          handleDeleteExpenses(expense);
         }}
       />
 
@@ -85,16 +120,8 @@ export default function Expenses() {
         <ExpenseForm
           initialData={editExpense}
           onSubmit={(data) => {
-            if (editExpense) {
-              // Fixed: Dispatch update action with ID and data
-              dispatch(updateExpense({ id: editExpense.id || editExpense._id, ...data }));
-            } else {
-              // Fixed: Dispatch create action with payload and userId if needed
-              dispatch(createExpense({ ...data, userId }));
-            }
-            setShowForm(false);
-            setEditExpense(null);
-          }}
+            handleExpenseSubmitForm(data);
+            }}
           onClose={() => {
             setShowForm(false);
             setEditExpense(null);
@@ -115,8 +142,7 @@ export default function Expenses() {
             setSelectedExpense(null);
           }}
           onClose={() => {
-            setShowDelete(false);
-            setSelectedExpense(null);
+            handleCloseForm();
           }}
         />
       )}

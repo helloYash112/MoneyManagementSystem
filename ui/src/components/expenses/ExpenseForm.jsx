@@ -21,7 +21,7 @@ export default function ExpenseForm({
           className="space-y-4"
         >
           <input
-            {...register("title")}
+            {...register("description")}
             placeholder="Expense Title"
             className="w-full rounded-lg border p-3"
           />
@@ -30,6 +30,7 @@ export default function ExpenseForm({
             {...register("amount")}
             placeholder="Amount"
             type="number"
+            step="0.01"
             className="w-full rounded-lg border p-3"
           />
 
@@ -41,14 +42,12 @@ export default function ExpenseForm({
             <option value="Food">Food</option>
             <option value="Bills">Bills</option>
             <option value="Transport">Transport</option>
-            <option value="Entertainment">
-              Entertainment
-            </option>
+            <option value="Entertainment">Entertainment</option>
           </select>
 
           <input
             type="date"
-            {...register("date")}
+            {...register("expenseDate")}
             className="w-full rounded-lg border p-3"
           />
 
