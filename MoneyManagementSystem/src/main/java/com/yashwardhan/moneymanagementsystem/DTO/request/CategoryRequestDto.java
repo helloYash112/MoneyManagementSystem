@@ -10,5 +10,5 @@ public class CategoryRequestDto {
     private String name;
 
     private String description;
-    private  long userId;
+    private  Long userId;
 }

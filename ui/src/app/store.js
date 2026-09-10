@@ -5,6 +5,7 @@ import loanReducer from "../features/loan/loanSlice";
 import repaymentReducer from "../features/repayment/repaymentSlice";
 import expenseReducer from "../features/expense/expenseSlice";
 import uiReducer from "../features/ui/uiSlice";
+import categoriesReducer from "../features/categories/categoriesSlice"
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     repayment: repaymentReducer,
     expense: expenseReducer,
     ui: uiReducer,
+    categories:categoriesReducer
   },
 })
 

@@ -10,7 +10,7 @@ export const fetchCategories = createAsyncThunk(
     'categories/fetchCategories',
     async (_, { rejectWithValue }) => {
         try {
-            const response = await api.get("/categroies");
+            const response = await api.get("/categories");
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || error.message);
@@ -22,7 +22,7 @@ export const fetchCategoryById = createAsyncThunk(
     'categories/fetchCategoryById',
     async (id, { rejectWithValue }) => {
         try {
-            const response = await api.get(`/categroies/${id}`);
+            const response = await api.get(`/categories/${id}`);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || error.message);
@@ -34,7 +34,7 @@ export const createCategory = createAsyncThunk(
     'categories/createCategory',
     async (categoryRequest, { rejectWithValue }) => {
         try {
-            const response = await api.post("/categroies", categoryRequest);
+            const response = await api.post("/categories", categoryRequest);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || error.message);
@@ -46,7 +46,7 @@ export const updateCategory = createAsyncThunk(
     'categories/updateCategory',
     async ({ id, categoryRequest }, { rejectWithValue }) => {
         try {
-            const response = await api.put(`/categroies/${id}`, categoryRequest);
+            const response = await api.put(`/categories/${id}`, categoryRequest);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || error.message);
@@ -58,7 +58,7 @@ export const deleteCategory = createAsyncThunk(
     'categories/deleteCategory',
     async (id, { rejectWithValue }) => {
         try {
-            await api.delete(`/categroies/${id}`);
+            await api.delete(`/categories/${id}`);
             return id;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || error.message);

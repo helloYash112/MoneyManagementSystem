@@ -51,11 +51,8 @@ public class CategoryService {
 
     public CategoryResponseDto updateCategory(Long id, CategoryRequestDto request) {
         Category category = findCategoryOrThrow(id);
-
-        category.setDefaultCategory(true);
+        category.setName(request.getName());        
         category.setDescription(request.getDescription());
-        category.setName(request.getName());
-        category.setUserId(request.getUserId());
 
         Category updatedCategory = categoryRepo.save(category);
         return mapToResponse(updatedCategory);
@@ -79,6 +76,7 @@ public class CategoryService {
                 .name(category.getName())
                 .description(category.getDescription())
                 .createdAt(category.getCreatedAt())
+                .userId(category.getUserId())
                 .build();
     }
 }
